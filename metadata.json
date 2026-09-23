@@ -1,0 +1,6 @@
+{
+  "name": "Mutalib's Leather Factory",
+  "description": "Premium handcrafted leather goods store, e-commerce catalog, order management and admin dashboard for Mutalib's Leather Factory in Multan, Pakistan.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
