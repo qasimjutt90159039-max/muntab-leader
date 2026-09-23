@@ -13,17 +13,24 @@ interface QuickViewModalProps {
 
 export const QuickViewModal: React.FC<QuickViewModalProps> = ({ product, onClose }) => {
   if (!product) return null;
+  return <QuickViewModalContent product={product} onClose={onClose} />;
+};
 
+const QuickViewModalContent: React.FC<{ product: Product; onClose: () => void }> = ({ product, onClose }) => {
   const { addToCart } = useCart();
   const { isInWishlist, toggleWishlist } = useWishlist();
   const isWished = isInWishlist(product.id);
 
-  const [selectedColor, setSelectedColor] = useState<string>(product.color || product.availableColors[0]);
+  const [selectedColor, setSelectedColor] = useState<string>(
+    product.color || (product.availableColors && product.availableColors[0]) || 'Cognac Tan'
+  );
   const [selectedSize, setSelectedSize] = useState<string | undefined>(
     product.size || (product.availableSizes ? product.availableSizes[0] : undefined)
   );
   const [quantity, setQuantity] = useState<number>(1);
-  const [selectedImage, setSelectedImage] = useState<string>(product.images[0] || product.thumbnail);
+  const [selectedImage, setSelectedImage] = useState<string>(
+    (product.images && product.images[0]) || product.thumbnail || ''
+  );
 
   const handleAdd = () => {
     addToCart(product, quantity, selectedColor, selectedSize);
@@ -102,11 +109,11 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({ product, onClose
               {/* Price */}
               <div className="flex items-baseline gap-3">
                 <span className="text-2xl font-mono font-bold text-[#1E1511]">
-                  Rs. {product.price.toLocaleString()}
+                  Rs. {(product.price || 0).toLocaleString()}
                 </span>
                 {product.compareAtPrice && (
                   <span className="text-sm font-mono text-stone-400 line-through">
-                    Rs. {product.compareAtPrice.toLocaleString()}
+                    Rs. {(product.compareAtPrice || 0).toLocaleString()}
                   </span>
                 )}
                 {product.discountPercentage && (

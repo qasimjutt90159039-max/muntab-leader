@@ -20,13 +20,15 @@ export const AuthPage: React.FC = () => {
   const { showToast } = useToast();
 
   // If already logged in, redirect
-  if (user) {
-    if (isAdmin) {
-      navigate('/admin');
-    } else {
-      navigate('/account');
+  React.useEffect(() => {
+    if (user) {
+      if (isAdmin) {
+        navigate('/admin');
+      } else {
+        navigate('/account');
+      }
     }
-  }
+  }, [user, isAdmin, navigate]);
 
   const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

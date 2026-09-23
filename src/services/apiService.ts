@@ -14,6 +14,10 @@ async function fetchJson<T>(url: string, options?: RequestInit, fallback?: () =>
     if (!res.ok) {
       throw new Error(`HTTP error! status: ${res.status}`);
     }
+    const contentType = res.headers.get('content-type');
+    if (contentType && contentType.includes('text/html')) {
+      throw new Error('Received HTML fallback');
+    }
     return await res.json();
   } catch (err) {
     if (fallback) {

@@ -27,8 +27,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
       <div className="relative overflow-hidden aspect-4/3 bg-[#F4EDE4]">
         <Link to={`/product/${product.slug}`} className="block w-full h-full">
           <ImageWithFallback
-            src={product.thumbnail || product.images[0]}
-            alt={product.name}
+            src={product.thumbnail || (product.images && product.images[0]) || ''}
+            alt={product.name || 'Leather product'}
             fallbackTitle={product.name}
             aspectRatioClass="aspect-4/3"
             className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
@@ -114,10 +114,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
               <Star className="w-3.5 h-3.5 fill-current" />
             </div>
             <span className="font-mono text-xs text-stone-700 font-medium">
-              {product.rating.toFixed(1)}
+              {Number(product.rating || 5.0).toFixed(1)}
             </span>
             <span className="text-stone-300">·</span>
-            <span className="text-[11px] text-stone-400">({product.reviewCount})</span>
+            <span className="text-[11px] text-stone-400">({product.reviewCount ?? 0})</span>
           </div>
         </div>
 
@@ -125,11 +125,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
         <div className="pt-2 border-t border-[#F4EDE4] flex items-center justify-between">
           <div className="flex items-baseline gap-2">
             <span className="text-sm sm:text-base font-semibold font-mono tabular-nums text-[#1E1511]">
-              Rs. {product.price.toLocaleString()}
+              Rs. {(product.price || 0).toLocaleString()}
             </span>
             {product.compareAtPrice && product.compareAtPrice > product.price && (
               <span className="text-xs text-stone-400 line-through font-mono tabular-nums">
-                Rs. {product.compareAtPrice.toLocaleString()}
+                Rs. {(product.compareAtPrice || 0).toLocaleString()}
               </span>
             )}
           </div>

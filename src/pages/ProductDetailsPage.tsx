@@ -55,8 +55,8 @@ export const ProductDetailsPage: React.FC = () => {
   // Sync state when product loads
   React.useEffect(() => {
     if (product) {
-      setActiveImage(product.images[0] || product.thumbnail);
-      setSelectedColor(product.color || product.availableColors[0] || '');
+      setActiveImage((product.images && product.images[0]) || product.thumbnail || '');
+      setSelectedColor(product.color || (product.availableColors && product.availableColors[0]) || 'Cognac Tan');
       setSelectedSize(product.size || (product.availableSizes ? product.availableSizes[0] : ''));
       setReviewsList(storageService.getReviews(product.id));
       window.scrollTo(0, 0);
@@ -217,34 +217,34 @@ export const ProductDetailsPage: React.FC = () => {
                     <Star
                       key={i}
                       className={`w-4 h-4 ${
-                        i < Math.floor(product.rating) ? 'fill-current' : 'stroke-current fill-none'
+                        i < Math.floor(product.rating || 5) ? 'fill-current' : 'stroke-current fill-none'
                       }`}
                     />
                   ))}
                 </div>
-                <span className="font-mono font-semibold text-stone-800">{product.rating.toFixed(1)}</span>
+                <span className="font-mono font-semibold text-stone-800">{Number(product.rating || 5.0).toFixed(1)}</span>
                 <span>·</span>
                 <button
                   onClick={() => setActiveTab('reviews')}
                   className="text-stone-600 hover:text-[#8C5D38] underline"
                 >
-                  ({product.reviewCount} customer reviews)
+                  ({product.reviewCount ?? 0} customer reviews)
                 </button>
               </div>
 
               {/* Pricing */}
               <div className="flex items-baseline gap-3 pt-2">
                 <span className="text-3xl font-mono font-bold text-[#1E1511]">
-                  Rs. {product.price.toLocaleString()}
+                  Rs. {(product.price || 0).toLocaleString()}
                 </span>
-                {product.compareAtPrice && (
+                {product.compareAtPrice && product.compareAtPrice > product.price && (
                   <span className="text-base font-mono text-stone-400 line-through">
-                    Rs. {product.compareAtPrice.toLocaleString()}
+                    Rs. {(product.compareAtPrice || 0).toLocaleString()}
                   </span>
                 )}
-                {product.discountPercentage && (
+                {product.discountPercentage && product.discountPercentage > 0 && (
                   <span className="text-xs font-semibold text-[#8C5D38] bg-[#F4EDE4] px-2.5 py-1">
-                    Save Rs. {(product.compareAtPrice! - product.price).toLocaleString()}
+                    Save {product.discountPercentage}%
                   </span>
                 )}
               </div>

@@ -95,10 +95,35 @@ export function initializeStorage(): void {
   }
 }
 
+// Auto-initialize when running in browser
+if (typeof window !== 'undefined') {
+  initializeStorage();
+}
+
 export const storageService = {
+  initializeStorage,
+
   // Products
   getProducts(): Product[] {
-    return getStored<Product[]>(KEYS.PRODUCTS, INITIAL_PRODUCTS);
+    const rawList = getStored<Product[]>(KEYS.PRODUCTS, INITIAL_PRODUCTS);
+    if (!Array.isArray(rawList) || rawList.length === 0) {
+      setStored(KEYS.PRODUCTS, INITIAL_PRODUCTS);
+      return INITIAL_PRODUCTS;
+    }
+    return rawList.map(p => ({
+      ...p,
+      price: typeof p.price === 'number' ? p.price : 0,
+      compareAtPrice: typeof p.compareAtPrice === 'number' ? p.compareAtPrice : undefined,
+      rating: typeof p.rating === 'number' ? p.rating : 5.0,
+      reviewCount: typeof p.reviewCount === 'number' ? p.reviewCount : 0,
+      stock: typeof p.stock === 'number' ? p.stock : 10,
+      images: Array.isArray(p.images) && p.images.length > 0 ? p.images : [p.thumbnail || 'https://images.unsplash.com/photo-1627123424574-724758594e93?auto=format&fit=crop&w=900&q=80'],
+      thumbnail: p.thumbnail || (Array.isArray(p.images) && p.images[0]) || '',
+      availableColors: Array.isArray(p.availableColors) && p.availableColors.length > 0 ? p.availableColors : [p.color || 'Cognac Brown'],
+      availableSizes: Array.isArray(p.availableSizes) ? p.availableSizes : [],
+      tags: Array.isArray(p.tags) ? p.tags : [],
+      specifications: p.specifications || {},
+    }));
   },
   getProductById(id: string): Product | undefined {
     return this.getProducts().find(p => p.id === id);

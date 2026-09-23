@@ -48,11 +48,11 @@ export const ShopPage: React.FC<{ pageTitle?: string; filterType?: 'all' | 'new'
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase();
         const matches =
-          p.name.toLowerCase().includes(q) ||
-          p.sku.toLowerCase().includes(q) ||
-          p.material.toLowerCase().includes(q) ||
-          p.category.toLowerCase().includes(q) ||
-          p.tags.some((t) => t.toLowerCase().includes(q));
+          (p.name || '').toLowerCase().includes(q) ||
+          (p.sku || '').toLowerCase().includes(q) ||
+          (p.material || '').toLowerCase().includes(q) ||
+          (p.category || '').toLowerCase().includes(q) ||
+          (Array.isArray(p.tags) && p.tags.some((t) => t.toLowerCase().includes(q)));
         if (!matches) return false;
       }
 
@@ -60,7 +60,7 @@ export const ShopPage: React.FC<{ pageTitle?: string; filterType?: 'all' | 'new'
       if (p.price > priceRange) return false;
 
       // Color
-      if (selectedColor && !p.availableColors.includes(selectedColor)) return false;
+      if (selectedColor && !(Array.isArray(p.availableColors) && p.availableColors.includes(selectedColor))) return false;
 
       // Stock
       if (inStockOnly && p.stock <= 0) return false;

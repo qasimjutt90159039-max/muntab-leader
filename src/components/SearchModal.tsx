@@ -18,12 +18,12 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
     const q = query.toLowerCase().trim();
     return allProducts.filter(
       (p) =>
-        p.name.toLowerCase().includes(q) ||
-        p.category.toLowerCase().includes(q) ||
-        p.subcategory.toLowerCase().includes(q) ||
-        p.sku.toLowerCase().includes(q) ||
-        p.material.toLowerCase().includes(q) ||
-        p.tags.some((t) => t.toLowerCase().includes(q))
+        (p.name || '').toLowerCase().includes(q) ||
+        (p.category || '').toLowerCase().includes(q) ||
+        (p.subcategory || '').toLowerCase().includes(q) ||
+        (p.sku || '').toLowerCase().includes(q) ||
+        (p.material || '').toLowerCase().includes(q) ||
+        (Array.isArray(p.tags) && p.tags.some((t) => t.toLowerCase().includes(q)))
     );
   }, [query, allProducts]);
 
@@ -93,7 +93,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
                   className="p-4 flex items-center gap-4 hover:bg-[#FAF8F5] transition-colors group"
                 >
                   <img
-                    src={product.thumbnail || product.images[0]}
+                    src={product.thumbnail || (product.images && product.images[0]) || ''}
                     alt={product.name}
                     className="w-14 h-14 object-cover border border-[#EBE5DF] shrink-0"
                   />
@@ -105,7 +105,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
                       {product.name}
                     </div>
                     <div className="text-xs text-stone-500 font-mono">
-                      Rs. {product.price.toLocaleString()}
+                      Rs. {(product.price || 0).toLocaleString()}
                     </div>
                   </div>
                   <ArrowRight className="w-4 h-4 text-stone-300 group-hover:text-[#8C5D38] transition-colors shrink-0" />

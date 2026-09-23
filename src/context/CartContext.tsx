@@ -54,7 +54,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   // Recalculate discount whenever cart items change
   useEffect(() => {
     if (coupon) {
-      const currentSubtotal = cart.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+      const currentSubtotal = cart.reduce((sum, item) => sum + (item?.product?.price || 0) * (item?.quantity || 1), 0);
       const res = storageService.validateCoupon(coupon.code, currentSubtotal);
       if (res.valid) {
         setCouponDiscount(res.discount);
@@ -66,8 +66,8 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }
   }, [cart, coupon, showToast]);
 
-  const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
-  const subtotal = cart.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+  const cartCount = cart.reduce((sum, item) => sum + (item?.quantity || 0), 0);
+  const subtotal = cart.reduce((sum, item) => sum + (item?.product?.price || 0) * (item?.quantity || 1), 0);
   const shipping = subtotal === 0 || subtotal >= BUSINESS_INFO.freeShippingThreshold ? 0 : BUSINESS_INFO.standardShippingFee;
   const total = Math.max(0, subtotal - couponDiscount + shipping);
 
