@@ -299,6 +299,45 @@ export const CraftsmanshipPage: React.FC = () => (
   </div>
 );
 
+// --- LEATHER GUIDE ---
+export const LeatherGuidePage: React.FC = () => (
+  <div className="bg-[#FAF8F5] min-h-screen py-10">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6">
+      <Breadcrumbs items={[{ label: 'Home', path: '/' }, { label: 'Leather Guide' }]} />
+
+      <div className="mt-6 mb-10 text-center">
+        <h1 className="text-3xl sm:text-4xl font-serif font-bold text-[#1E1511]">The Complete Leather Guide</h1>
+        <p className="text-xs sm:text-sm text-stone-600 mt-2">Understanding leather grades, tanning processes, and natural patina.</p>
+      </div>
+
+      <div className="bg-white border border-[#EBE5DF] p-8 shadow-xs space-y-6 text-xs sm:text-sm text-stone-700 leading-relaxed">
+        <h3 className="text-lg font-serif font-bold text-[#1E1511]">1. Full-Grain Leather (The Gold Standard)</h3>
+        <p>
+          Full-grain leather is the highest quality leather available. It uses the entire grain of the hide with all its natural imperfections and natural toughness. Over time, instead of wearing out, full-grain leather develops an extraordinary lustrous patina.
+        </p>
+
+        <h3 className="text-lg font-serif font-bold text-[#1E1511]">2. Top-Grain Leather</h3>
+        <p>
+          Top-grain leather has had the top layer sanded or buffed to remove scars and blemishes, and is then imprinted with an imitation grain. While durable, it does not develop the rich patina of full-grain leather.
+        </p>
+
+        <h3 className="text-lg font-serif font-bold text-[#1E1511]">3. Vegetable-Tanned vs. Chrome-Tanned</h3>
+        <p>
+          <strong>Vegetable Tanning:</strong> An ancient, eco-friendly method using natural tree bark and plant tannins. It produces stiff, sturdy leather with a sweet woody aroma that ages beautifully.
+        </p>
+        <p>
+          <strong>Chrome Tanning:</strong> Uses chromium salts for rapid tanning. It creates softer, supple leather ideal for jackets and garments.
+        </p>
+
+        <h3 className="text-lg font-serif font-bold text-[#1E1511]">4. What Makes Multan Leather Special?</h3>
+        <p>
+          Multan's arid climate and generations of tanners have mastered the art of curing tough water-buffalo and cow hides that resist humidity fluctuations while maintaining structural integrity for decades.
+        </p>
+      </div>
+    </div>
+  </div>
+);
+
 // --- PRODUCT CARE ---
 export const ProductCarePage: React.FC = () => (
   <div className="bg-[#FAF8F5] min-h-screen py-10">
